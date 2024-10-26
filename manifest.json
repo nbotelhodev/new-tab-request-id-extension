@@ -1,0 +1,16 @@
+{
+  "name": "NewTabRequestIdCloudwatch",
+  "version": "1.0",
+  "description": "Open the selected requestId in Cloudwatch in new tab",
+  "content_scripts": [
+    {
+      "matches": ["https://*.console.aws.amazon.com/cloudwatch/*"],
+      "css": ["src/styles/core.css"],
+      "js": ["src/scripts/core.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "manifest_version": 3
+}
+

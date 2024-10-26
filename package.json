@@ -1,0 +1,29 @@
+{
+  "name": "new-tab-request-id-extension",
+  "version": "1.0.0",
+  "description": "Open the selected requestId in Cloudwatch in new tab",
+  "main": "core.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:nbotelhodev/new-tab-request-id-extension.git"
+  },
+  "keywords": [
+    "Chrome-Extension",
+    "Cloudwatch",
+    "AWS",
+    "RequestId"
+  ],
+  "author": "Nícolas Botelho",
+  "license": "MIT",
+  "bugs": {
+    "url": "git@github.com:nbotelhodev/new-tab-request-id-extension/issues"
+  },
+  "homepage": "git@github.com:nbotelhodev/new-tab-request-id-extension#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^9.0.3",
+    "jest": "^29.7.0"
+  }
+}
