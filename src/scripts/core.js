@@ -1,5 +1,35 @@
-import buildNewUrl from "./string-utils";
-import findRequestId from "./string-utils";
+const UUID_REGEX =
+  /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+
+function findRequestId(text) {
+  if (!text?.match(UUID_REGEX)) return null;
+
+  return text.match(UUID_REGEX)[0];
+}
+
+// *20 space
+// *40 @
+// *27 '
+// *3d =
+// *2c ,
+// *0a new line
+// *7c |
+// *2f /
+function buildNewUrl(currentUrl, requestId) {
+  const isFilterPresent = currentUrl.includes("filter");
+
+  // filter @requestId='9d86af5e-e7e5-5e87-aa10-f0057389f99d'
+  let replaceValue = `filter*20*40requestId*3d*27${requestId}*27`;
+
+  if (isFilterPresent) {
+    // remove any filter then apply only requestId filter
+    replaceValue += "*20*0a*7c";
+    return currentUrl.replace(/filter\*20(.*)\*7c/, replaceValue);
+  }
+
+  replaceValue = `*0a*7c${replaceValue}~queryId~`;
+  return currentUrl.replace(/~queryId~/, replaceValue);
+}
 
 const bubbleDOM = document.createElement("div");
 const anchorDOM = document.createElement("a");
@@ -23,7 +53,7 @@ function updateAnchor(href, text) {
 
 function initExtension() {
   const iframe = document.getElementById("microConsole-Logs");
-  console.log("iframe1", iframe);
+  console.debug("iframe1", iframe);
   if (!iframe) return false;
 
   iframe.contentWindow.document.addEventListener("mouseup", function (e) {
@@ -36,17 +66,17 @@ function initExtension() {
     } else if (doc.selection && doc.selection.createRange) {
       selection = doc.selection.createRange().text;
     }
-    console.log("selection", selection);
+    console.debug("selection", selection);
     if (selection) {
       const requestId = findRequestId(selection);
-      console.log("requestId", requestId);
+      console.debug("requestId", requestId);
 
       if (requestId) {
         const currentUrl = window.location.href;
         const newUrl = buildNewUrl(currentUrl, requestId);
-        console.log("newUrl", newUrl);
+        console.debug("newUrl", newUrl);
 
-        updateAnchor(newUrl, `New tab by @requestId=${requestId}`);
+        updateAnchor(newUrl, `New tab @requestId=${requestId}`);
         renderBubble(e.clientX, e.clientY);
       }
     }
@@ -67,39 +97,39 @@ function initExtension() {
 function attachEvent() {
   const iframe = document.getElementById("microConsole-Logs");
 
-  console.log("iframe2", iframe);
+  console.debug("iframe2", iframe);
   if (!iframe) return false;
 
   const runQueryButton = iframe.contentWindow.document.querySelector(
     "div.query-workspace button[data-testid='scroll-run-query']"
   );
-  console.log("runQueryButton", runQueryButton);
+  console.debug("runQueryButton", runQueryButton);
   if (!runQueryButton) return;
 
   runQueryButton.addEventListener("click", function () {
     if (initExtension()) {
-      console.log("Extension is running");
+      console.debug("Extension is running");
     }
   });
   return true;
 }
 
 window.addEventListener("load", function () {
-  const maxtries = 30;
-  console.log("onload");
+  const maxtries = 60;
+  console.debug("onload");
   let tries = 0;
   const intervalID = setInterval(() => {
     document
       .getElementById("microConsole-Logs")
       .addEventListener("load", function () {
-        alert("iframe loaded");
+        console.debug("iframe loaded");
       });
-    console.log("try attachEvent");
+    console.debug("try attachEvent");
     if (attachEvent() || tries >= maxtries) {
       clearInterval(intervalID);
-      console.log("attached!");
+      console.debug("attached!");
     } else {
-      console.log("failed!" + tries);
+      console.debug("failed!" + tries);
     }
     tries++;
   }, 5000);

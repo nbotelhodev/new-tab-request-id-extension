@@ -22,12 +22,11 @@ function buildNewUrl(currentUrl, requestId) {
   let replaceValue = `filter*20*40requestId*3d*27${requestId}*27`;
 
   if (isFilterPresent) {
+    // remove any filter then apply only requestId filter
     replaceValue += "*20and*20*0a";
-    return currentUrl.replace(/filter\*20/, replaceValue);
+    return currentUrl.replace(/filter\*20(.*)\*7c/, replaceValue);
   }
 
   replaceValue = `*0a*7c${replaceValue}~queryId~`;
   return currentUrl.replace(/~queryId~/, replaceValue);
 }
-
-module.exports = { buildNewUrl, findRequestId };

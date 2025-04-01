@@ -1,6 +1,6 @@
 {
   "name": "NewTabRequestIdCloudwatch",
-  "version": "1.0",
+  "version": "0.0.0.1",
   "description": "Open the selected requestId in Cloudwatch in new tab",
   "content_scripts": [
     {
@@ -13,4 +13,3 @@
   ],
   "manifest_version": 3
 }
-
