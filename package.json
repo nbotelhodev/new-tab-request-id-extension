@@ -1,6 +1,6 @@
 {
   "name": "new-tab-request-id-extension",
-  "version": "1.0.0",
+  "version": "0.0.0.2",
   "description": "Open the selected requestId in Cloudwatch in new tab",
   "main": "core.js",
   "scripts": {
